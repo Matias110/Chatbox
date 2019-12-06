@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <title>CHATBOX</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="user">
+          <img src="img/carolina.jpg" alt="">
+          <div class="online">
+            <h3>Carolina Torrres</h3>
+            <h6>Online</h6>
+          </div>
+        </div>
+        <div class="config">
+          <span class="fa fa-ellipsis-v"></span>
+        </div>
+      </div>
+      <!-- Computadora -->
+      <div id="content">
+        <div id="computer">
+          <img src="img/carolina.jpg">
+          <div class="content-text">
+            <div class="text">
+              <p>Hola, como te llamas?</p>
+            </div>
+            <div class="time">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Mensajeria -->
+      <div class="box-msj">
+        <textarea placeholder="Escribe un mensaje"></textarea>
+        <button><span class="fa fa-paper-plane"></span></button>
+      </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+    //Variable global para sumar en 1 en 1
+    var i = 0;
+
+    //Tiempo mensaje
+    var fecha = new Date(),
+    horas = fecha.getHours(),
+    minutos = fecha.getMinutes();
+
+    /*Por efecto son 24 horas le tenemos
+    que restar 24 - 12 = 12*/
+    if (horas >= 12) {
+    horas = horas - 12;
+    }
+    //Si horas es igual a 0
+    else if(horas == 0){
+    horas = 12;
+    }
+    var time = horas + ":" + minutos;
+
+    $(".time").html(`<p><small>${time}</small></p>`);
+
+    $("button").click(function() {
+
+    const contenido = document.getElementById("content");
+
+    const computer = contenido.children[contenido.children.length - 1].id;
+
+    if (computer === "computer" || i > 4) { // Empieza el If
+
+    let msj = $("textarea").val();
+
+    //constructor
+
+    class messager {
+    constructor(msj, time) {
+    this.msj = msj;
+    this.time = time;
+    }
+
+    }
+
+    var user = new messager(msj, time);
+
+    //Nodo mensaje
+
+    var content = $("#content");
+    if (user.msj && user.time) {
+    content.append(`
+    <div id="user">
+      <div class="content-text">
+        <div class="text">
+          <p>${user.msj}</p>
+        </div>
+        <div class="time">
+          <p><small>${user.time}</small></p>
+        </div>
+      </div>
+      <img src="img/martin.jpg">
+    </div>`);
+
+    //Efecto scroll animado
+
+    $(content).animate(
+    {
+    scrollTop: $("#content").prop("scrollHeight")
+    },
+    1000
+    );
+    button();
+    }
+
+    //Respuesta computadora
+
+    function button() {//Funcion
+    var chat = [
+    "¿Cuantos años tienes?",
+    "¿Trabajas es un empresa de IT?",
+    "¿Eres un developer freelance?",
+    "¿Que lenguajes de programación te gusta?",
+    "Gracias por la info nos vemos luego :)"
+    ];
+
+    /*Si es igual a 0 ejecuta ejecuta el código*/
+    if (i <= 4 && i != undefined) {
+
+    //En sierto tiempo ejecuta el msj
+    setTimeout(function() {
+    content.append(`
+    <div id="computer">
+      <img src="img/carolina.jpg">
+      <div class="content-text">
+        <div class="text">
+          <p>${chat[i]}</p>
+        </div>
+        <div class="time">
+          <p><small>${time}</small></p>
+        </div>
+      </div>
+    </div>`);
+
+    //Le sumanos en 0 + 1;
+    i+=1;
+
+    //Efecto scroll animado
+    $(content).animate(
+    {
+    scrollTop: $("#content").prop("scrollHeight")
+    },
+    1000
+    );
+    }, 1000 + Math.random() * 20 * 100);
+    }
+    }//Fim function
+
+    //Vaciar texto textarea
+    $("textarea").val("");
+
+    } //Termina el if
+
+    });
+
+    //Efecto scroll
+    $(function() {
+    //Algunas propiedades del plugins
+    $("#content").niceScroll({
+    cursorcolor: "#FF5E3A", //Color fundo barra
+    cursorwidth: "8px", //Ancho barra
+    cursorborderradius: "5px", //Borde redondo
+    mousepase :  40, //Velocidad de desplazamiento
+    emulatetouch : false,//Habilitar desplazamiento tactil
+    });
+
+    });
+
+    });
+    </script>
+  </body>
+</html>
